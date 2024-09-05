@@ -22,15 +22,15 @@ function CrearAuthor() {
 
   //Consumo del API con la petición HTTP Post
   const fetchData = async () => {
-    const requestOptions = {
+    fetch("https://test-deploy-12.onrender.com/authors", {
       mode: "cors",
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ autor }),
-    };
-    fetch("https://test-deploy-12.onrender.com/authors", requestOptions).then(
-      (response) => response.json()
-    );
+      body: JSON.stringify({
+        name: autor.name,
+        age: autor.age,
+      }),
+    }).then((response) => response.json());
   };
   return (
     <div className="container-sm border border-3 rounded-1">
