@@ -1,26 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { conn } from "@/app/utils/database";
 
-export const POST = async (request: NextRequest) => {
-  //const { method, body } = request;
-
-  //const { name, email } = request.body;
+export const GET = async (
+  request: NextRequest,
+  { params }: { params: { id: number } }
+) => {
+  const _Id = params.id;
 
   try {
-    const JsonBody = await request.json();
-
     const query =
-      "INSERT INTO tbl_usuarios (id, primernombre, segundonombre, primerapellido, segundoapellido) VALUES ($1, $2, $3, $4, $5) RETURNING *";
-    const values = [
-      JsonBody.id,
-      JsonBody.primernombre,
-      JsonBody.segundonombre,
-      JsonBody.primerapellido,
-      JsonBody.segundoapellido,
-    ];
+      "SELECT primernombre, segundonombre, primerapellido, segundoapellido FROM tbl_usuarios WHERE id = $1 RETURNING *";
+
     //console.log("Valores: ", values, " Metodo: ", method);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const result = await conn.query(query, values);
+    const result = await conn.query(query, [_Id]);
 
     return new NextResponse(JSON.stringify("Usuario: " + result.rows[0]), {
       status: 200,
